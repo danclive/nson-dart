@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 import 'dart:convert';
+import 'dart:collection';
 import 'package:collection/collection.dart';
 
 part 'num.dart';
@@ -42,33 +43,23 @@ abstract class Value {
   String get string;
 
   // 抽象方法，用于比较值
-  bool equalsValue(Value other);
+  bool equal(Value other);
 
-  // 类型检查方法
-  bool get isF32 => type == Type.f32;
-  bool get isF64 => type == Type.f64;
-  bool get isI32 => type == Type.i32;
-  bool get isI64 => type == Type.i64;
-  bool get isU32 => type == Type.u32;
-  bool get isU64 => type == Type.u64;
-  bool get isString => type == Type.string;
-  bool get isBinary => type == Type.binary;
-  bool get isArray => type == Type.array;
-  bool get isMap => type == Type.map;
-  bool get isBoolean => type == Type.boolean;
-  bool get isNullValue => type == Type.nullValue;
-  bool get isTimestamp => type == Type.timestamp;
-  bool get isId => type == Type.id;
+  // 抽象方法，用于计算哈希值
+  int get _hash;
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is Value && type == other.type && equalsValue(other);
+      other is Value && type == other.type && equal(other);
 
   @override
-  int get hashCode => Object.hash(type, string);
+  int get hashCode => _hash;
 
   int get bytesSize;
+
+  @override
+  String toString() => string;
 }
 
 class Bool extends Value {
@@ -93,12 +84,15 @@ class Bool extends Value {
   String get string => _value.toString();
 
   @override
-  bool equalsValue(Value other) {
+  bool equal(Value other) {
     if (other is Bool) {
       return _value == other._value;
     }
     return false;
   }
+
+  @override
+  int get _hash => Object.hash(type, _value);
 
   @override
   int get bytesSize => 1;
@@ -124,9 +118,12 @@ class Null extends Value {
   String get string => 'null';
 
   @override
-  bool equalsValue(Value other) {
+  bool equal(Value other) {
     return other is Null;
   }
+
+  @override
+  int get _hash => type.hashCode;
 
   @override
   int get bytesSize => 0;

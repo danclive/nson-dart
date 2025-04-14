@@ -22,12 +22,15 @@ class Timestamp extends Value {
   String get string => _value.toString();
 
   @override
-  bool equalsValue(Value other) {
+  bool equal(Value other) {
     if (other is Timestamp) {
       return _value == other._value;
     }
     return false;
   }
+
+  @override
+  int get _hash => Object.hash(type, _value);
 
   @override
   int get bytesSize => 8;

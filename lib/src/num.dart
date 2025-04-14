@@ -22,12 +22,15 @@ class F32 extends Value {
   String get string => _value.toString();
 
   @override
-  bool equalsValue(Value other) {
+  bool equal(Value other) {
     if (other is F32) {
       return _value == other._value;
     }
     return false;
   }
+
+  @override
+  int get _hash => Object.hash(type, _value);
 
   @override
   int get bytesSize => 4;
@@ -55,12 +58,15 @@ class F64 extends Value {
   String get string => _value.toString();
 
   @override
-  bool equalsValue(Value other) {
+  bool equal(Value other) {
     if (other is F64) {
       return _value == other._value;
     }
     return false;
   }
+
+  @override
+  int get _hash => Object.hash(type, _value);
 
   @override
   int get bytesSize => 8;
@@ -88,12 +94,15 @@ class I32 extends Value {
   String get string => _value.toString();
 
   @override
-  bool equalsValue(Value other) {
+  bool equal(Value other) {
     if (other is I32) {
       return _value == other._value;
     }
     return false;
   }
+
+  @override
+  int get _hash => Object.hash(type, _value);
 
   @override
   int get bytesSize => 4;
@@ -121,12 +130,15 @@ class I64 extends Value {
   String get string => _value.toString();
 
   @override
-  bool equalsValue(Value other) {
+  bool equal(Value other) {
     if (other is I64) {
       return _value == other._value;
     }
     return false;
   }
+
+  @override
+  int get _hash => Object.hash(type, _value);
 
   @override
   int get bytesSize => 8;
@@ -154,12 +166,15 @@ class U32 extends Value {
   String get string => _value.toString();
 
   @override
-  bool equalsValue(Value other) {
+  bool equal(Value other) {
     if (other is U32) {
       return _value == other._value;
     }
     return false;
   }
+
+  @override
+  int get _hash => Object.hash(type, _value);
 
   @override
   int get bytesSize => 4;
@@ -187,12 +202,15 @@ class U64 extends Value {
   String get string => _value.toString();
 
   @override
-  bool equalsValue(Value other) {
+  bool equal(Value other) {
     if (other is U64) {
       return _value == other._value;
     }
     return false;
   }
+
+  @override
+  int get _hash => Object.hash(type, _value);
 
   @override
   int get bytesSize => 8;
