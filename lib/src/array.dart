@@ -7,6 +7,12 @@ class Array extends Value with ListMixin<Value> {
 
   List<Value> get value => _value;
 
+  /// 从字节数组解析 Array
+  static Array fromBytes(Uint8List bytes) {
+    final reader = BytesReader(bytes);
+    return reader.decodeArray();
+  }
+
   @override
   Type get type => Type.array;
 

@@ -22,8 +22,20 @@ class EncodeError implements Exception {
   String toString() => 'EncodeError: $message';
 }
 
-/// 仅在 nson 包内使用的 Uint8List 扩展方法
-extension _Uint8ListExtension on Uint8List {
+/// 字节缓冲区类，用于构建字节序列
+class ByteBuffer {
+  final BytesBuilder _builder = BytesBuilder();
+
+  /// 添加一个字节
+  void add(int value) {
+    _builder.addByte(value);
+  }
+
+  /// 添加多个字节
+  void addAll(List<int> values) {
+    _builder.add(values);
+  }
+
   /// 写入一个无符号 8 位整数
   void writeU8(int value) {
     add(value);
@@ -122,10 +134,15 @@ extension _Uint8ListExtension on Uint8List {
     // 写入二进制数据
     addAll(value.value);
   }
+
+  /// 转换为 Uint8List
+  Uint8List toBytes() {
+    return _builder.toBytes();
+  }
 }
 
 /// 对 Array 进行编码
-void encodeArray(Uint8List buffer, Array array) {
+void encodeArray(ByteBuffer buffer, Array array) {
   final len = array.bytesSize;
 
   if (len > maxNsonSize) {
@@ -145,7 +162,7 @@ void encodeArray(Uint8List buffer, Array array) {
 }
 
 /// 对 Map 进行编码
-void encodeMap(Uint8List buffer, M map) {
+void encodeMap(ByteBuffer buffer, M map) {
   final len = map.bytesSize;
 
   if (len > maxNsonSize) {
@@ -169,7 +186,7 @@ void encodeMap(Uint8List buffer, M map) {
 }
 
 /// 对 Value 进行编码
-void encodeValue(Uint8List buffer, Value value) {
+void encodeValue(ByteBuffer buffer, Value value) {
   // 写入类型标记
   buffer.writeU8(value.type.tag);
 
@@ -224,9 +241,9 @@ void encodeValue(Uint8List buffer, Value value) {
 extension ValueToBytes on Value {
   /// 将 Value 转换为字节数组
   Uint8List toBytes() {
-    final buffer = Uint8List(0);
+    final buffer = ByteBuffer();
     encodeValue(buffer, this);
-    return buffer;
+    return buffer.toBytes();
   }
 }
 
@@ -240,7 +257,7 @@ extension ArrayToBytes on Array {
       throw EncodeError.invalidValueLen(len, '数组长度必须小于 $maxNsonSize');
     }
 
-    final buffer = Uint8List(0);
+    final buffer = ByteBuffer();
     buffer.writeU32(len);
 
     for (var item in value) {
@@ -248,7 +265,7 @@ extension ArrayToBytes on Array {
     }
 
     buffer.writeU8(0);
-    return buffer;
+    return buffer.toBytes();
   }
 }
 
@@ -262,7 +279,7 @@ extension MapToBytes on M {
       throw EncodeError.invalidValueLen(len, 'Map 长度必须小于 $maxNsonSize');
     }
 
-    final buffer = Uint8List(0);
+    final buffer = ByteBuffer();
     buffer.writeU32(len);
 
     for (var entry in value.entries) {
@@ -271,6 +288,6 @@ extension MapToBytes on M {
     }
 
     buffer.writeU8(0);
-    return buffer;
+    return buffer.toBytes();
   }
 }

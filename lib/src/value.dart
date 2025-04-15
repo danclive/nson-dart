@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'dart:collection';
 import 'package:collection/collection.dart';
 
+import 'decode.dart';
+
 part 'num.dart';
 part 'string.dart';
 part 'binary.dart';
@@ -47,6 +49,12 @@ abstract class Value {
 
   // 抽象方法，用于计算哈希值
   int get _hash;
+
+  /// 从字节数组解析 Value
+  static Value fromBytes(Uint8List bytes) {
+    final reader = BytesReader(bytes);
+    return reader.decodeValue();
+  }
 
   @override
   bool operator ==(Object other) =>

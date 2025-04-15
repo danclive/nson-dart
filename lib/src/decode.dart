@@ -250,30 +250,3 @@ class BytesReader extends Reader {
     return result;
   }
 }
-
-/// 基于 Value 类的扩展方法
-extension ValueExtension on Value {
-  /// 从字节数组解析 Value
-  static Value fromBytes(Uint8List bytes) {
-    final reader = BytesReader(bytes);
-    return reader.decodeValue();
-  }
-}
-
-/// 基于 Array 类的扩展方法
-extension ArrayExtension on Array {
-  /// 从字节数组解析 Array
-  static Array fromBytes(Uint8List bytes) {
-    final reader = BytesReader(bytes);
-    return reader.decodeArray();
-  }
-}
-
-/// 基于 M 类的扩展方法
-extension MapExtension on M {
-  /// 从字节数组解析 Map
-  static M fromBytes(Uint8List bytes) {
-    final reader = BytesReader(bytes);
-    return reader.decodeMap();
-  }
-}

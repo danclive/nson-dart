@@ -7,6 +7,12 @@ class M extends Value with MapMixin<String, Value> {
 
   Map<String, Value> get value => _value;
 
+  /// 从字节数组解析 Map
+  static M fromBytes(Uint8List bytes) {
+    final reader = BytesReader(bytes);
+    return reader.decodeMap();
+  }
+
   @override
   Type get type => Type.map;
 
