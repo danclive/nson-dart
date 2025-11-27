@@ -41,6 +41,30 @@ class ByteBuffer {
     add(value);
   }
 
+  /// 写入一个有符号 8 位整数
+  void writeI8(int value) {
+    final bytes = Uint8List(1);
+    final data = ByteData.view(bytes.buffer);
+    data.setInt8(0, value);
+    addAll(bytes);
+  }
+
+  /// 写入一个无符号 16 位整数（小端字节序）
+  void writeU16(int value) {
+    final bytes = Uint8List(2);
+    final data = ByteData.view(bytes.buffer);
+    data.setUint16(0, value, Endian.little);
+    addAll(bytes);
+  }
+
+  /// 写入一个有符号 16 位整数（小端字节序）
+  void writeI16(int value) {
+    final bytes = Uint8List(2);
+    final data = ByteData.view(bytes.buffer);
+    data.setInt16(0, value, Endian.little);
+    addAll(bytes);
+  }
+
   /// 写入一个有符号 32 位整数（小端字节序）
   void writeI32(int value) {
     final bytes = Uint8List(4);
@@ -209,6 +233,18 @@ void encodeValue(ByteBuffer buffer, Value value) {
       break;
     case Type.u64:
       buffer.writeU64(value.get<U64>().value);
+      break;
+    case Type.i8:
+      buffer.writeI8(value.get<I8>().value);
+      break;
+    case Type.u8:
+      buffer.writeU8(value.get<U8>().value);
+      break;
+    case Type.i16:
+      buffer.writeI16(value.get<I16>().value);
+      break;
+    case Type.u16:
+      buffer.writeU16(value.get<U16>().value);
       break;
     case Type.string:
       buffer.writeString(value.get<Str>().value);

@@ -22,6 +22,10 @@ enum Type {
   i64(0x14),
   u32(0x15),
   u64(0x16),
+  i8(0x17),
+  u8(0x18),
+  i16(0x19),
+  u16(0x1A),
   string(0x21),
   binary(0x22),
   array(0x31),
@@ -31,6 +35,15 @@ enum Type {
 
   final int tag;
   const Type(this.tag);
+
+  static Type? fromTag(int tag) {
+    for (var type in Type.values) {
+      if (type.tag == tag) {
+        return type;
+      }
+    }
+    return null;
+  }
 }
 
 abstract class Value {
@@ -55,6 +68,26 @@ abstract class Value {
     final reader = BytesReader(bytes);
     return reader.decodeValue();
   }
+
+  // Type conversion helpers
+  double? asF32() => this is F32 ? (this as F32).value : null;
+  double? asF64() => this is F64 ? (this as F64).value : null;
+  int? asI32() => this is I32 ? (this as I32).value : null;
+  int? asI64() => this is I64 ? (this as I64).value : null;
+  int? asU32() => this is U32 ? (this as U32).value : null;
+  int? asU64() => this is U64 ? (this as U64).value : null;
+  int? asI8() => this is I8 ? (this as I8).value : null;
+  int? asU8() => this is U8 ? (this as U8).value : null;
+  int? asI16() => this is I16 ? (this as I16).value : null;
+  int? asU16() => this is U16 ? (this as U16).value : null;
+  String? asString() => this is Str ? (this as Str).value : null;
+  Array? asArray() => this is Array ? (this as Array) : null;
+  M? asNMap() => this is M ? (this as M) : null;
+  bool? asBool() => this is Bool ? (this as Bool).value : null;
+  Binary? asBinary() => this is Binary ? (this as Binary) : null;
+  Timestamp? asTimestamp() => this is Timestamp ? (this as Timestamp) : null;
+  Id? asId() => this is Id ? (this as Id) : null;
+  bool isNull() => this is Null;
 
   @override
   bool operator ==(Object other) =>

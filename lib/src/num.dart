@@ -215,3 +215,147 @@ class U64 extends Value {
   @override
   int get bytesSize => 8;
 }
+
+class I8 extends Value {
+  final int _value;
+
+  I8(this._value) : super._();
+
+  int get value => _value;
+
+  @override
+  Type get type => Type.i8;
+
+  @override
+  T get<T extends Value>() {
+    if (T == I8) {
+      return this as T;
+    }
+    throw Exception('Type mismatch: expected I8 but got $T');
+  }
+
+  @override
+  String get string => _value.toString();
+
+  @override
+  bool equal(Value other) {
+    if (other is I8) {
+      return _value == other._value;
+    }
+    return false;
+  }
+
+  @override
+  int get _hash => Object.hash(type, _value);
+
+  @override
+  int get bytesSize => 1;
+}
+
+class U8 extends Value {
+  final int _value;
+
+  U8(this._value) : super._();
+
+  int get value => _value;
+
+  @override
+  Type get type => Type.u8;
+
+  @override
+  T get<T extends Value>() {
+    if (T == U8) {
+      return this as T;
+    }
+    throw Exception('Type mismatch: expected U8 but got $T');
+  }
+
+  @override
+  String get string => _value.toString();
+
+  @override
+  bool equal(Value other) {
+    if (other is U8) {
+      return _value == other._value;
+    }
+    return false;
+  }
+
+  @override
+  int get _hash => Object.hash(type, _value);
+
+  @override
+  int get bytesSize => 1;
+}
+
+class I16 extends Value {
+  final int _value;
+
+  I16(this._value) : super._();
+
+  int get value => _value;
+
+  @override
+  Type get type => Type.i16;
+
+  @override
+  T get<T extends Value>() {
+    if (T == I16) {
+      return this as T;
+    }
+    throw Exception('Type mismatch: expected I16 but got $T');
+  }
+
+  @override
+  String get string => _value.toString();
+
+  @override
+  bool equal(Value other) {
+    if (other is I16) {
+      return _value == other._value;
+    }
+    return false;
+  }
+
+  @override
+  int get _hash => Object.hash(type, _value);
+
+  @override
+  int get bytesSize => 2;
+}
+
+class U16 extends Value {
+  final int _value;
+
+  U16(this._value) : super._();
+
+  int get value => _value;
+
+  @override
+  Type get type => Type.u16;
+
+  @override
+  T get<T extends Value>() {
+    if (T == U16) {
+      return this as T;
+    }
+    throw Exception('Type mismatch: expected U16 but got $T');
+  }
+
+  @override
+  String get string => _value.toString();
+
+  @override
+  bool equal(Value other) {
+    if (other is U16) {
+      return _value == other._value;
+    }
+    return false;
+  }
+
+  @override
+  int get _hash => Object.hash(type, _value);
+
+  @override
+  int get bytesSize => 2;
+}

@@ -32,6 +32,24 @@ abstract class Reader {
     return buf[0];
   }
 
+  int readI8() {
+    final buf = readExact(1);
+    final data = ByteData.view(buf.buffer, buf.offsetInBytes, 1);
+    return data.getInt8(0);
+  }
+
+  int readU16() {
+    final buf = readExact(2);
+    final data = ByteData.view(buf.buffer, buf.offsetInBytes, 2);
+    return data.getUint16(0, Endian.little);
+  }
+
+  int readI16() {
+    final buf = readExact(2);
+    final data = ByteData.view(buf.buffer, buf.offsetInBytes, 2);
+    return data.getInt16(0, Endian.little);
+  }
+
   int readI32() {
     final buf = readExact(4);
     final data = ByteData.view(buf.buffer, buf.offsetInBytes, 4);
@@ -207,6 +225,14 @@ abstract class Reader {
         return U32(readU32());
       case Type.u64:
         return U64(readU64());
+      case Type.i8:
+        return I8(readI8());
+      case Type.u8:
+        return U8(readU8());
+      case Type.i16:
+        return I16(readI16());
+      case Type.u16:
+        return U16(readU16());
       case Type.string:
         return Str(readString());
       case Type.array:
