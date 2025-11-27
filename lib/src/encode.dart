@@ -217,58 +217,58 @@ void encodeValue(ByteBuffer buffer, Value value) {
   // 根据类型写入值
   switch (value.type) {
     case Type.f32:
-      buffer.writeF32(value.get<F32>().value);
+      buffer.writeF32((value as F32).value);
       break;
     case Type.f64:
-      buffer.writeF64(value.get<F64>().value);
+      buffer.writeF64((value as F64).value);
       break;
     case Type.i32:
-      buffer.writeI32(value.get<I32>().value);
+      buffer.writeI32((value as I32).value);
       break;
     case Type.i64:
-      buffer.writeI64(value.get<I64>().value);
+      buffer.writeI64((value as I64).value);
       break;
     case Type.u32:
-      buffer.writeU32(value.get<U32>().value);
+      buffer.writeU32((value as U32).value);
       break;
     case Type.u64:
-      buffer.writeU64(value.get<U64>().value);
+      buffer.writeU64((value as U64).value);
       break;
     case Type.i8:
-      buffer.writeI8(value.get<I8>().value);
+      buffer.writeI8((value as I8).value);
       break;
     case Type.u8:
-      buffer.writeU8(value.get<U8>().value);
+      buffer.writeU8((value as U8).value);
       break;
     case Type.i16:
-      buffer.writeI16(value.get<I16>().value);
+      buffer.writeI16((value as I16).value);
       break;
     case Type.u16:
-      buffer.writeU16(value.get<U16>().value);
+      buffer.writeU16((value as U16).value);
       break;
     case Type.string:
-      buffer.writeString(value.get<Str>().value);
+      buffer.writeString((value as Str).value);
       break;
     case Type.array:
-      encodeArray(buffer, value.get<Array>());
+      encodeArray(buffer, value as Array);
       break;
     case Type.map:
-      encodeMap(buffer, value.get<M>());
+      encodeMap(buffer, value as M);
       break;
     case Type.boolean:
-      buffer.writeU8(value.get<Bool>().value ? 1 : 0);
+      buffer.writeU8((value as Bool).value ? 1 : 0);
       break;
     case Type.nullValue:
       // Null 类型不需要写入额外数据
       break;
     case Type.binary:
-      buffer.writeBinary(value.get<Binary>());
+      buffer.writeBinary(value as Binary);
       break;
     case Type.timestamp:
-      buffer.writeU64(value.get<Timestamp>().value);
+      buffer.writeU64((value as Timestamp).value);
       break;
     case Type.id:
-      buffer.addAll(value.get<Id>().value);
+      buffer.addAll((value as Id).value);
       break;
   }
 }

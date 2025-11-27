@@ -11,14 +11,6 @@ class F32 extends Value {
   Type get type => Type.f32;
 
   @override
-  T get<T extends Value>() {
-    if (T == F32) {
-      return this as T;
-    }
-    throw Exception('Type mismatch: expected F32 but got $T');
-  }
-
-  @override
   String get string => _value.toString();
 
   @override
@@ -47,14 +39,6 @@ class F64 extends Value {
   Type get type => Type.f64;
 
   @override
-  T get<T extends Value>() {
-    if (T == F64) {
-      return this as T;
-    }
-    throw Exception('Type mismatch: expected F64 but got $T');
-  }
-
-  @override
   String get string => _value.toString();
 
   @override
@@ -75,20 +59,18 @@ class F64 extends Value {
 class I32 extends Value {
   final int _value;
 
-  I32(this._value) : super._();
+  I32(int value) : _value = value, super._() {
+    if (value < -2147483648 || value > 2147483647) {
+      throw RangeError(
+        'I32 value must be in range -2147483648 to 2147483647, got $value',
+      );
+    }
+  }
 
   int get value => _value;
 
   @override
   Type get type => Type.i32;
-
-  @override
-  T get<T extends Value>() {
-    if (T == I32) {
-      return this as T;
-    }
-    throw Exception('Type mismatch: expected I32 but got $T');
-  }
 
   @override
   String get string => _value.toString();
@@ -119,14 +101,6 @@ class I64 extends Value {
   Type get type => Type.i64;
 
   @override
-  T get<T extends Value>() {
-    if (T == I64) {
-      return this as T;
-    }
-    throw Exception('Type mismatch: expected I64 but got $T');
-  }
-
-  @override
   String get string => _value.toString();
 
   @override
@@ -147,20 +121,18 @@ class I64 extends Value {
 class U32 extends Value {
   final int _value;
 
-  U32(this._value) : super._();
+  U32(int value) : _value = value, super._() {
+    if (value < 0 || value > 4294967295) {
+      throw RangeError(
+        'U32 value must be in range 0 to 4294967295, got $value',
+      );
+    }
+  }
 
   int get value => _value;
 
   @override
   Type get type => Type.u32;
-
-  @override
-  T get<T extends Value>() {
-    if (T == U32) {
-      return this as T;
-    }
-    throw Exception('Type mismatch: expected U32 but got $T');
-  }
 
   @override
   String get string => _value.toString();
@@ -191,14 +163,6 @@ class U64 extends Value {
   Type get type => Type.u64;
 
   @override
-  T get<T extends Value>() {
-    if (T == U64) {
-      return this as T;
-    }
-    throw Exception('Type mismatch: expected U64 but got $T');
-  }
-
-  @override
   String get string => _value.toString();
 
   @override
@@ -219,20 +183,16 @@ class U64 extends Value {
 class I8 extends Value {
   final int _value;
 
-  I8(this._value) : super._();
+  I8(int value) : _value = value, super._() {
+    if (value < -128 || value > 127) {
+      throw RangeError('I8 value must be in range -128 to 127, got $value');
+    }
+  }
 
   int get value => _value;
 
   @override
   Type get type => Type.i8;
-
-  @override
-  T get<T extends Value>() {
-    if (T == I8) {
-      return this as T;
-    }
-    throw Exception('Type mismatch: expected I8 but got $T');
-  }
 
   @override
   String get string => _value.toString();
@@ -255,20 +215,16 @@ class I8 extends Value {
 class U8 extends Value {
   final int _value;
 
-  U8(this._value) : super._();
+  U8(int value) : _value = value, super._() {
+    if (value < 0 || value > 255) {
+      throw RangeError('U8 value must be in range 0 to 255, got $value');
+    }
+  }
 
   int get value => _value;
 
   @override
   Type get type => Type.u8;
-
-  @override
-  T get<T extends Value>() {
-    if (T == U8) {
-      return this as T;
-    }
-    throw Exception('Type mismatch: expected U8 but got $T');
-  }
 
   @override
   String get string => _value.toString();
@@ -291,20 +247,18 @@ class U8 extends Value {
 class I16 extends Value {
   final int _value;
 
-  I16(this._value) : super._();
+  I16(int value) : _value = value, super._() {
+    if (value < -32768 || value > 32767) {
+      throw RangeError(
+        'I16 value must be in range -32768 to 32767, got $value',
+      );
+    }
+  }
 
   int get value => _value;
 
   @override
   Type get type => Type.i16;
-
-  @override
-  T get<T extends Value>() {
-    if (T == I16) {
-      return this as T;
-    }
-    throw Exception('Type mismatch: expected I16 but got $T');
-  }
 
   @override
   String get string => _value.toString();
@@ -327,20 +281,16 @@ class I16 extends Value {
 class U16 extends Value {
   final int _value;
 
-  U16(this._value) : super._();
+  U16(int value) : _value = value, super._() {
+    if (value < 0 || value > 65535) {
+      throw RangeError('U16 value must be in range 0 to 65535, got $value');
+    }
+  }
 
   int get value => _value;
 
   @override
   Type get type => Type.u16;
-
-  @override
-  T get<T extends Value>() {
-    if (T == U16) {
-      return this as T;
-    }
-    throw Exception('Type mismatch: expected U16 but got $T');
-  }
 
   @override
   String get string => _value.toString();

@@ -25,6 +25,8 @@ A Dart implementation of NSON (Network Serialization Object Notation), a binary 
 
 - **Efficient Encoding/Decoding**: Binary format with minimal overhead
 - **Type Safety**: Strong typing with type conversion helpers
+- **Serialization Support**: Automatic conversion between Dart objects and NSON
+- **JSON Conversion**: Convert NSON values to/from JSON with extended type support
 - **Cross-Platform Compatibility**: Fully compatible with nson-rust and nson-go implementations
 
 ## Getting started
@@ -117,6 +119,80 @@ final nullValue = Null();
 print(nullValue.isNull()); // true
 ```
 
+### Automatic Serialization
+
+```dart
+// Convert Dart objects to NSON (with default types)
+// int -> I32, double -> F64
+final data = {
+  'name': 'Alice',
+  'age': 30,        // I32
+  'scores': [95.5, 87.3, 92.0],  // F64 values
+  'active': true,
+};
+
+// Serialize to bytes
+final bytes = serialize(data);
+
+// Deserialize back to Dart object
+final decoded = deserialize(bytes);
+print(decoded['name']); // 'Alice'
+
+// Type-safe deserialization
+final typedMap = deserializeAs<Map<String, dynamic>>(bytes);
+```
+
+### Strong Typing with Explicit Conversions
+
+Since Dart has unified `int` and `double` types (unlike Rust/Go), we provide explicit conversion methods for precise type control:
+
+```dart
+// Use explicit type conversions for precise control
+final sensorData = M({
+  'temperature': 25.toI8(),      // -128 to 127
+  'humidity': 65.toU8(),          // 0 to 255
+  'pressure': 1013.toI16(),       // -32768 to 32767
+  'port': 8080.toU16(),           // 0 to 65535
+  'timestamp': 1234567890.toI64(), // Large numbers
+  'latitude': 39.9042.toF64(),    // 64-bit float
+  'altitude': 30.5.toF32(),       // 32-bit float
+  'name': 'Sensor-01'.toStr(),
+  'active': true.toBool(),
+});
+
+// Available conversion methods:
+// int:    toI8(), toU8(), toI16(), toU16(), toI32(), toU32(), toI64(), toU64()
+// double: toF32(), toF64()
+// String: toStr()
+// bool:   toBool()
+// List<int>: toBinary()
+// List:   toArray()
+// Map<String, dynamic>: toNMap()
+```
+
+### JSON Conversion
+
+```dart
+// NSON to JSON
+final nsonValue = M({
+  'name': Str('Bob'),
+  'age': I32(25),
+  'timestamp': Timestamp(1234567890),
+});
+
+final jsonString = nsonValue.toJsonString(pretty: true);
+print(jsonString);
+// Output:
+// {
+//   "name": "Bob",
+//   "age": 25,
+//   "$tim": 1234567890
+// }
+
+// JSON to NSON
+final decoded = ValueToJson.fromJsonString(jsonString);
+```
+
 ## Additional information
 
 This package is part of the NSON family:
@@ -125,7 +201,12 @@ This package is part of the NSON family:
 
 ### Recent Updates
 
-- Added support for I8, U8, I16, U16 types to match nson-rust and nson-go
-- Added type conversion helper methods (asI8(), asU8(), asI16(), asU16(), etc.)
-- Improved compatibility with other NSON implementations
-- Added comprehensive test coverage for all data types
+- **v1.1.0**: Added serialization and JSON conversion support
+  - Automatic conversion between Dart objects and NSON values
+  - JSON serialization with extended type support (Binary, Timestamp, Id)
+  - Type-safe deserialization helpers
+  - Id hex string conversion methods
+- **v1.1.0**: Added I8, U8, I16, U16 types and helper methods
+  - Complete numeric type support matching nson-rust and nson-go
+  - Type conversion helper methods (asI8(), asU8(), etc.)
+  - Comprehensive test coverage

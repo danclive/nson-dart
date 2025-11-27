@@ -17,14 +17,6 @@ class M extends Value with MapMixin<String, Value> {
   Type get type => Type.map;
 
   @override
-  T get<T extends Value>() {
-    if (T == M) {
-      return this as T;
-    }
-    throw Exception('Type mismatch: expected M but got $T');
-  }
-
-  @override
   String get string =>
       _value.entries.map((e) => '${e.key}: ${e.value.toString()}').join(', ');
 
@@ -47,10 +39,17 @@ class M extends Value with MapMixin<String, Value> {
   int get _hash => Object.hash(type, MapEquality().hash(_value));
 
   @override
-  int get bytesSize =>
-      4 +
-      1 +
-      _value.values.fold(0, (sum, value) => sum + 1 + value.bytesSize + 1);
+  int get bytesSize {
+    // 4 bytes for total length + entries + 1 byte for terminator
+    int size = 4 + 1;
+    for (var entry in _value.entries) {
+      // key: 1 byte length + key bytes
+      size += 1 + utf8.encode(entry.key).length;
+      // value: 1 byte type tag + value bytes
+      size += 1 + entry.value.bytesSize;
+    }
+    return size;
+  }
 
   // 实现 MapMixin 所需的方法
   @override

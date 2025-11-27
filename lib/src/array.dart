@@ -17,14 +17,6 @@ class Array extends Value with ListMixin<Value> {
   Type get type => Type.array;
 
   @override
-  T get<T extends Value>() {
-    if (T == Array) {
-      return this as T;
-    }
-    throw Exception('Type mismatch: expected Array but got $T');
-  }
-
-  @override
   String get string => _value.map((e) => e.toString()).join(', ');
 
   @override

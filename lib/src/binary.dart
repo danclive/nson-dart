@@ -11,15 +11,7 @@ class Binary extends Value with ListMixin<int> {
   Type get type => Type.binary;
 
   @override
-  T get<T extends Value>() {
-    if (T == Binary) {
-      return this as T;
-    }
-    throw Exception('Type mismatch: expected Binary but got $T');
-  }
-
-  @override
-  String get string => _value.toString();
+  String get string => 'Binary(${_value.length} bytes)';
 
   @override
   bool equal(Value other) {

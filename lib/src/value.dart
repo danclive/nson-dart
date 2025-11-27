@@ -49,10 +49,7 @@ enum Type {
 abstract class Value {
   const Value._();
 
-  // 抽象方法，子类必须实现，T 必须是 Value 的子类
-  T get<T extends Value>();
-
-  // 抽象 getter，子类必须实现
+  // Abstract getter, subclasses must implement
   Type get type;
 
   String get string;
@@ -114,14 +111,6 @@ class Bool extends Value {
   Type get type => Type.boolean;
 
   @override
-  T get<T extends Value>() {
-    if (T == Bool) {
-      return this as T;
-    }
-    throw Exception('Type mismatch: expected Bool but got $T');
-  }
-
-  @override
   String get string => _value.toString();
 
   @override
@@ -146,14 +135,6 @@ class Null extends Value {
 
   @override
   Type get type => Type.nullValue;
-
-  @override
-  T get<T extends Value>() {
-    if (T == Null) {
-      return this as T;
-    }
-    throw Exception('Type mismatch: expected Null but got $T');
-  }
 
   @override
   String get string => 'null';

@@ -24,19 +24,30 @@ class Id extends Value {
 
   Uint8List get value => _value;
 
+  /// Create Id from hex string
+  static Id fromHex(String hex) {
+    if (hex.length != length * 2) {
+      throw ArgumentError('Hex string must be ${length * 2} characters long');
+    }
+
+    final bytes = Uint8List(length);
+    for (var i = 0; i < length; i++) {
+      final byteHex = hex.substring(i * 2, i * 2 + 2);
+      bytes[i] = int.parse(byteHex, radix: 16);
+    }
+    return Id(bytes);
+  }
+
+  /// Convert to hex string
+  String toHex() {
+    return _value.map((b) => b.toRadixString(16).padLeft(2, '0')).join();
+  }
+
   @override
   Type get type => Type.id;
 
   @override
-  T get<T extends Value>() {
-    if (T == Id) {
-      return this as T;
-    }
-    throw Exception('Type mismatch: expected Id but got $T');
-  }
-
-  @override
-  String get string => _value.toString();
+  String get string => toHex();
 
   @override
   bool equal(Value other) {

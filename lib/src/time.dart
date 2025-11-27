@@ -11,14 +11,6 @@ class Timestamp extends Value {
   Type get type => Type.timestamp;
 
   @override
-  T get<T extends Value>() {
-    if (T == Timestamp) {
-      return this as T;
-    }
-    throw Exception('Type mismatch: expected Timestamp but got $T');
-  }
-
-  @override
   String get string => _value.toString();
 
   @override

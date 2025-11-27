@@ -11,14 +11,6 @@ class Str extends Value implements Comparable<String> {
   Type get type => Type.string;
 
   @override
-  T get<T extends Value>() {
-    if (T == Str) {
-      return this as T;
-    }
-    throw Exception('Type mismatch: expected Str but got $T');
-  }
-
-  @override
   String get string => _value;
 
   @override
